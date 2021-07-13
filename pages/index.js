@@ -4,19 +4,19 @@ import Box from '../src/components/Box';
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations';
 
-function ProfileSidebar(propriedades) {
+function ProfileSidebar({ githubUser }) {
   return (
     <Box as="aside">
-      <img src={`https://github.com/${propriedades.githubUser}.png`} style={{ borderRadius: '8px' }}/>
-      <hr />
+      <img src={`https://github.com/${githubUser}.png`} style={{ borderRadius: '8px' }}/>
+      <hr/>
 
       <p>
-        <a className="boxLink" href={`https://github.com/${propriedades.githubUser}`}>
-          @{propriedades.githubUser}
+        <a className="boxLink" href={`https://github.com/${githubUser}`}>
+          @{ githubUser }
         </a>
       </p>
 
-      <hr />
+      <hr/>
 
       <AlurakutProfileSidebarMenuDefault />
      </Box>
@@ -27,15 +27,11 @@ export default function Home() {
   const githubUser = 'gptomiazzi';
   
   const [ comunidades, setComunidades ] = React.useState([{
-    id: '152464646',
+    id: '0',
     title: 'Eu odeio acordar cedo',
-    image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
+    image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg',
+    link: 'https://www.facebook.com/watch/?v=499189910859109'
   },
-  {
-    id: '454545455',
-    title: 'Lixão da mãe Lucinda',
-    image: 'http://s2.glbimg.com/cB357pqmZqK894tYwSjh7xKSh-sD_GEmXadljeq7fjpIoz-HdGixxa_8qOZvMp3w/s.glbimg.com/et/nv/f/original/2012/08/08/lucinda.jpg'
-  }
 ]);
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   // const comunidades = comunidades[0];
@@ -54,10 +50,10 @@ export default function Home() {
 
   return (
     <>
-      <AlurakutMenu />
+      <AlurakutMenu githubUser={ githubUser }/>
       <MainGrid>
         <div className="profileArea" style={{ gridArea: 'profileArea' }}>
-          <ProfileSidebar githubUser={githubUser}/>
+          <ProfileSidebar githubUser={ githubUser }/>
         </div>
         <div className="welcomeArea" style={{ gridArea: 'welcomeArea' }}>
           <Box>
@@ -81,6 +77,7 @@ export default function Home() {
                 id: new Date().toISOString(),
                 title: dadosDoForm.get('title'),
                 image: dadosDoForm.get('image'),
+                link: dadosDoForm.get('link')
               };
               const comunidadesAtualizadas = [...comunidades, comunidade];
               setComunidades(comunidadesAtualizadas);
@@ -104,6 +101,15 @@ export default function Home() {
                   autoComplete="off"
                 />
               </div>
+              <div>
+                <input 
+                  placeholder="Qual o link da sua comunidade?" 
+                  name="link" 
+                  aria-label="Qual o link da sua comunidade?"
+                  type="text"
+                  autoComplete="off"
+                  />
+              </div>
 
               <button>
                 Criar comunidade
@@ -121,7 +127,7 @@ export default function Home() {
               {comunidades.map((itemAtual) => {
                 return (
                   <li key={itemAtual.id}>
-                    <a href={`/users/${itemAtual.title}`}>
+                    <a href={itemAtual.link}>
                       <img src={itemAtual.image}/>
                       <span>{itemAtual.title}</span>
                     </a>

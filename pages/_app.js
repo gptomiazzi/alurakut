@@ -11,7 +11,8 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: sans-serif;
-    background-color: #D9E6F6;
+    background-image: url('https://wallpaperaccess.com/full/1339588.jpg');
+    background-repeat: round;
   }
 
   #__next {
