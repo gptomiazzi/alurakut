@@ -13,16 +13,23 @@ function ProfileSidebar(propriedades) {
 
 export default function Home() {
   const githubUser = 'gptomiazzi';
-  const pessoasFavoritas = ['juunegreiros', 'omariosouto', 'peas', 'rafaballerini', 'marcobrunodev', 'felipefialho'];
+  const pessoasFavoritas = [
+    'juunegreiros',
+    'omariosouto',
+    'peas', 
+    'rafaballerini',
+    'marcobrunodev',
+    'felipefialho'
+  ];
 
   return (
     <>
       <AlurakutMenu />
       <MainGrid>
-        <div className=".profileArea" style={{ gridArea: 'profileArea' }}>
+        <div className="profileArea" style={{ gridArea: 'profileArea' }}>
           <ProfileSidebar githubUser={githubUser}/>
         </div>
-        <div className=".profileArea" style={{ gridArea: 'welcomeArea' }}>
+        <div className="welcomeArea" style={{ gridArea: 'welcomeArea' }}>
           <Box>
             <h1 className="title">
               Bem vindo(a)
@@ -31,7 +38,7 @@ export default function Home() {
             <OrkutNostalgicIconSet></OrkutNostalgicIconSet>
           </Box>
         </div>
-        <div className=".profileArea" style={{ gridArea: 'profileRelationsArea' }}>
+        <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
               Pessoas da Comunidade ({pessoasFavoritas.length})
