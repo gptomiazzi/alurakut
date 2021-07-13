@@ -25,12 +25,6 @@ function ProfileSidebar(propriedades) {
 
 export default function Home() {
   const githubUser = 'gptomiazzi';
-  //TODO
-  /* const githubFollowers = () => {
-    fetch(`https://api.github.com/users/gptomiazzi/followers`)
-    .then(followersList => followersList.json())
-  }
-  githubFollowers(); */
   
   const [ comunidades, setComunidades ] = React.useState([{
     id: '152464646',
@@ -154,25 +148,6 @@ export default function Home() {
               })}
             </ul>
           </ProfileRelationsBoxWrapper>
-          {/* //TODO
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Seguidores do GitHub ({githubFollowers.length})
-            </h2>
-
-            <ul>
-              {amigos.map((itemAtual) => {
-                return (
-                  <li>
-                      <a href={`/users/${itemAtual}`} key={itemAtual}>
-                        <img src={`https://github.com/${itemAtual}.png`}/>
-                        <span>{itemAtual}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper> */}
         </div>   
       </MainGrid>
     </>
