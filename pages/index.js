@@ -23,6 +23,29 @@ function ProfileSidebar({ githubUser }) {
   )
 }
 
+function ProfileRelationBox(props) {
+  return (
+  <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">
+          {props.title} ({props.items.length})
+      </h2>
+
+      <ul>
+          {props.items.map((itemAtual, indice) => {
+            return (
+              <li key={itemAtual}>
+                <a href={`https://github.com/${itemAtual}.png`}>
+                  <img src={itemAtual.image}/>
+                  <span>{itemAtual.title}</span>
+                </a>
+              </li>
+            )
+          })}
+      </ul>
+    </ProfileRelationsBoxWrapper>
+  );
+}
+
 export default function Home() {
   const githubUser = 'gptomiazzi';
   
@@ -33,13 +56,8 @@ export default function Home() {
     link: 'https://www.facebook.com/watch/?v=499189910859109'
   },
 ]);
-  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  // const comunidades = comunidades[0];
-  // const alteradorDeComunidades/setComunidades = comunidades[1];
 
-  console.log('Nosso teste', comunidades);
-
-  const amigos = [
+  const seguindo = [
     'juunegreiros',
     'omariosouto',
     'peas',
@@ -47,6 +65,18 @@ export default function Home() {
     'marcobrunodev',
     'felipefialho'
   ];
+
+  const [seguidores, setSeguidores] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch('https://api.github.com/users/Floodeer/followers')
+    .then( (respostaDoServidor) => {
+      return respostaDoServidor.json();
+    })
+    .then( (respostaCompleta) => {
+      setSeguidores(respostaCompleta);
+    })
+  }, [])
 
   return (
     <>
@@ -118,6 +148,28 @@ export default function Home() {
           </Box>
         </div>
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
+          
+          <ProfileRelationBox title="Seguidores" items={seguidores}/>
+
+          <ProfileRelationsBoxWrapper>
+            <h2 className="smallTitle">
+              Seguindo ({seguindo.length})
+            </h2>
+
+            <ul>
+              {seguindo.map((itemAtual) => {
+                return (
+                  <li key={itemAtual}>
+                      <a href={`/users/${itemAtual}`}>
+                        <img src={`https://github.com/${itemAtual}.png`}/>
+                        <span>{itemAtual}</span>
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          </ProfileRelationsBoxWrapper>
+
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
               Comunidades ({comunidades.length})
@@ -136,24 +188,8 @@ export default function Home() {
               })}
             </ul>
           </ProfileRelationsBoxWrapper>
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Amigos ({amigos.length})
-            </h2>
 
-            <ul>
-              {amigos.map((itemAtual) => {
-                return (
-                  <li key={itemAtual}>
-                      <a href={`/users/${itemAtual}`}>
-                        <img src={`https://github.com/${itemAtual}.png`}/>
-                        <span>{itemAtual}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
+
         </div>   
       </MainGrid>
     </>
