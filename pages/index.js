@@ -1,50 +1,10 @@
 import React from 'react';
 import MainGrid from '../src/components/MainGrid';
 import Box from '../src/components/Box';
-import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
+import ProfileRelationBox from '../src/components/ProfileRelationBox';
+import ProfileSidebar from '../src/components/ProfileSidebar';
+import { AlurakutMenu, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations';
-
-function ProfileSidebar({ githubUser }) {
-  return (
-    <Box as="aside">
-      <img src={`https://github.com/${githubUser}.png`} style={{ borderRadius: '8px' }}/>
-      <hr/>
-
-      <p>
-        <a className="boxLink" href={`https://github.com/${githubUser}`}>
-          @{ githubUser }
-        </a>
-      </p>
-
-      <hr/>
-
-      <AlurakutProfileSidebarMenuDefault />
-     </Box>
-  )
-}
-
-function ProfileRelationBox(props) {
-  return (
-  <ProfileRelationsBoxWrapper>
-      <h2 className="smallTitle">
-          {props.title} ({props.items.length})
-      </h2>
-
-      <ul>
-          {props.items.map((itemAtual, indice) => {
-            return (
-              <li key={itemAtual}>
-                <a href={`https://github.com/${itemAtual}.png`}>
-                  <img src={itemAtual.image}/>
-                  <span>{itemAtual.title}</span>
-                </a>
-              </li>
-            )
-          })}
-      </ul>
-    </ProfileRelationsBoxWrapper>
-  );
-}
 
 export default function Home() {
   const githubUser = 'gptomiazzi';
