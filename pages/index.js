@@ -9,35 +9,48 @@ import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations';
 export default function Home() {
   const githubUser = 'gptomiazzi';
   
-  const [ comunidades, setComunidades ] = React.useState([{
-    id: '0',
-    title: 'Eu odeio acordar cedo',
-    image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg',
-    link: 'https://www.facebook.com/watch/?v=499189910859109'
-  },
-]);
+  const [ comunidades, setComunidades ] = React.useState([]);
 
-  const seguindo = [
-    'juunegreiros',
-    'omariosouto',
-    'peas',
-    'rafaballerini',
-    'marcobrunodev',
-    'felipefialho'
-  ];
+  const [seguindo, setSeguindo] = React.useState([]);
 
   const [seguidores, setSeguidores] = React.useState([]);
 
   React.useEffect(() => {
-    fetch('https://api.github.com/users/Floodeer/followers')
-    .then( (respostaDoServidor) => {
-      return respostaDoServidor.json();
+    // Seguidores do GitHub
+    fetch(`https://api.github.com/users/${githubUser}/followers`)
+    .then( async (response) => {
+      setSeguidores(await response.json());
     })
-    .then( (respostaCompleta) => {
-      setSeguidores(respostaCompleta);
+    
+    // Seguindo do GitHub
+    fetch(`https://api.github.com/users/${githubUser}/following`)
+    .then( async (response) => {
+      setSeguindo(await response.json());
+    })
+
+    // API GraphQL
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'd55d3c61d740ca4adebffa1039f127',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ "query": `query {
+        allCommunities {
+          title
+          communityLink
+          imageUrl
+          id
+          creatorSlug
+        }
+      }` })
+    })
+    .then( async (response) => {
+      const responseComunities = await response.json();
+      setComunidades(responseComunities.data.allCommunities);
     })
   }, [])
-
   return (
     <>
       <AlurakutMenu githubUser={ githubUser }/>
@@ -64,14 +77,26 @@ export default function Home() {
               console.log('Imagem:', dadosDoForm.get('image'));
 
               const comunidade = {
-                id: new Date().toISOString(),
                 title: dadosDoForm.get('title'),
-                image: dadosDoForm.get('image'),
-                link: dadosDoForm.get('link')
+                imageUrl: dadosDoForm.get('image'),
+                communityLink: dadosDoForm.get('link'),
+                creatorSlug: githubUser,
               };
-              const comunidadesAtualizadas = [...comunidades, comunidade];
-              setComunidades(comunidadesAtualizadas);
-              console.log(comunidades);
+
+              fetch('/api/comunidades', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(comunidade)
+              })
+              .then(async (response) => {
+                const dados = await response.json();
+                const comunidade = dados.registroCriado;
+
+                const comunidadesAtualizadas = [...comunidades, comunidade];
+                setComunidades(comunidadesAtualizadas);
+              })
             }}>
               <div>
                 <input 
@@ -82,6 +107,7 @@ export default function Home() {
                   autoComplete="off"
                   />
               </div>
+              {/*CRIAR CAMPO P/ INFORMAR O USUÁRIO*/}
               <div>
                 <input 
                   placeholder="Coloque uma URL para usarmos de capa" 
@@ -110,26 +136,9 @@ export default function Home() {
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
           
           <ProfileRelationBox title="Seguidores" items={seguidores}/>
-
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Seguindo ({seguindo.length})
-            </h2>
-
-            <ul>
-              {seguindo.map((itemAtual) => {
-                return (
-                  <li key={itemAtual}>
-                      <a href={`/users/${itemAtual}`}>
-                        <img src={`https://github.com/${itemAtual}.png`}/>
-                        <span>{itemAtual}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
-
+          
+          <ProfileRelationBox title="Seguindo" items={seguindo}/>
+          
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
               Comunidades ({comunidades.length})
@@ -139,8 +148,8 @@ export default function Home() {
               {comunidades.map((itemAtual) => {
                 return (
                   <li key={itemAtual.id}>
-                    <a href={itemAtual.link}>
-                      <img src={itemAtual.image}/>
+                    <a href={itemAtual.communityLink}>
+                      <img src={itemAtual.imageUrl}/>
                       <span>{itemAtual.title}</span>
                     </a>
                   </li>

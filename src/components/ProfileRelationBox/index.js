@@ -8,16 +8,19 @@ function ProfileRelationBox(props) {
         </h2>
   
         <ul>
-            {props.items.map((itemAtual, indice) => {
+          {props.items.map((itemAtual, i = 0) => {
+            if (i < 6) {
+              i++
               return (
-                <li key={itemAtual}>
-                  <a href={`https://github.com/${itemAtual}.png`}>
-                    <img src={itemAtual.image}/>
-                    <span>{itemAtual.title}</span>
+                <li key={itemAtual.id}>
+                  <a href={itemAtual.url}>
+                    <img src={itemAtual.avatar_url}/>
+                    <span>{itemAtual.login}</span>
                   </a>
                 </li>
               )
-            })}
+            }
+          })}
         </ul>
       </ProfileRelationsBoxWrapper>
     );
