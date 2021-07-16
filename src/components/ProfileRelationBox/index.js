@@ -13,7 +13,7 @@ function ProfileRelationBox(props) {
               i++
               return (
                 <li key={itemAtual.id}>
-                  <a href={itemAtual.url}>
+                  <a href={itemAtual.html_url}>
                     <img src={itemAtual.avatar_url}/>
                     <span>{itemAtual.login}</span>
                   </a>
