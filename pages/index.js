@@ -1,4 +1,6 @@
 import React from 'react';
+import nookies from 'nookies';
+import jwt from 'jsonwebtoken'
 import MainGrid from '../src/components/MainGrid';
 import Box from '../src/components/Box';
 import ProfileRelationBox from '../src/components/ProfileRelationBox';
@@ -6,8 +8,9 @@ import ProfileSidebar from '../src/components/ProfileSidebar';
 import { AlurakutMenu, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations';
 
-export default function Home() {
-  const githubUser = 'gptomiazzi';
+
+export default function Home(props) {
+  const githubUser = props.githubUser;
   
   const [ comunidades, setComunidades ] = React.useState([]);
 
@@ -107,7 +110,6 @@ export default function Home() {
                   autoComplete="off"
                   />
               </div>
-              {/*CRIAR CAMPO P/ INFORMAR O USUÁRIO*/}
               <div>
                 <input 
                   placeholder="Coloque uma URL para usarmos de capa" 
@@ -141,7 +143,7 @@ export default function Home() {
           
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
-              Comunidades ({comunidades.length})
+              Comunidades({comunidades.length})
             </h2>
 
           <ul>
@@ -157,10 +159,37 @@ export default function Home() {
               })}
             </ul>
           </ProfileRelationsBoxWrapper>
-
-
         </div>   
       </MainGrid>
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const cookies = nookies.get(context);
+  const token = cookies.USER_TOKEN;
+  
+  //TROCAR P/ LOCALHOST QUANDO FOR ALTERAR
+  const { isAuthenticated } = await fetch('https://alurakut-eight-gamma.vercel.app/api/auth', {
+    headers: {
+      Authorization: token
+    }
+  })
+  .then((res) => res.json())
+
+  if (!isAuthenticated) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      }
+    }
+  }
+
+  const { githubUser } = jwt.decode((token))
+  return {
+    props: {
+      githubUser
+    },
+  }
 }

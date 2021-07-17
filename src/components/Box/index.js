@@ -55,6 +55,9 @@ const Box = styled.div`
     border-radius: 10000px;
     background-color: #6F92BB;
   }
+  button:hover {
+    transform: scale(1.1);
+  }
 `;
 
 export default Box;
