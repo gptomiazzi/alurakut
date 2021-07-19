@@ -13,9 +13,7 @@ function ProfileRelationBox(props) {
   
         <ul>
           { props.items[0]
-            ? props.items.map((itemAtual, i = 0) => {
-              if (i < 6) {
-                i++
+            ? props.items.map((itemAtual) => {
                 return (
                   <li key={itemAtual.id}>
                     <a href={itemAtual.html_url}>
@@ -24,23 +22,9 @@ function ProfileRelationBox(props) {
                     </a>
                   </li>
                 )
-              }
             })
             : <li></li>
           }
-          {/* {props.items.map((itemAtual, i = 0) => {
-            if (i < 6) {
-              i++
-              return (
-                <li key={itemAtual.id}>
-                  <a href={itemAtual.html_url}>
-                    <img src={itemAtual.avatar_url}/>
-                    <span>{itemAtual.login}</span>
-                  </a>
-                </li>
-              )
-            }
-          })} */}
         </ul>
       </ProfileRelationsBoxWrapper>
     );
