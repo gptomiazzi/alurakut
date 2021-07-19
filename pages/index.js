@@ -14,21 +14,27 @@ export default function Home(props) {
   
   const [ comunidades, setComunidades ] = React.useState([]);
 
-  const [seguindo, setSeguindo] = React.useState([]);
+  const [ following, setFollowing ] = React.useState([]);
 
-  const [seguidores, setSeguidores] = React.useState([]);
+  const [ followers, setFollowers ] = React.useState([]);
 
   React.useEffect(() => {
+    const ENDPOINT = `https://api.github.com/users/${githubUser}`;
+    const URL_CONFIG = '?per_page=6&page=1&order=DESC';
+
+    const URL_FOLLOWING = `${ENDPOINT}/following${URL_CONFIG}`;
+    const URL_FOLLOWERS = `${ENDPOINT}/followers${URL_CONFIG}`;
+
     // Seguidores do GitHub
-    fetch(`https://api.github.com/users/${githubUser}/followers`)
-    .then( async (response) => {
-      setSeguidores(await response.json());
+    fetch(URL_FOLLOWERS)
+    .then(async (response) => {
+      setFollowers(await response.json())
     })
     
     // Seguindo do GitHub
-    fetch(`https://api.github.com/users/${githubUser}/following`)
-    .then( async (response) => {
-      setSeguindo(await response.json());
+    fetch(URL_FOLLOWING)
+    .then(async (response) => {
+      setFollowing(await response.json())
     })
 
     // API GraphQL
@@ -54,6 +60,7 @@ export default function Home(props) {
       setComunidades(responseComunities.data.allCommunities);
     })
   }, [])
+
   return (
     <>
       <AlurakutMenu githubUser={ githubUser }/>
@@ -137,13 +144,13 @@ export default function Home(props) {
         </div>
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
           
-          <ProfileRelationBox title="Seguidores" items={seguidores}/>
+          <ProfileRelationBox title="Seguidores " items={followers}/>
           
-          <ProfileRelationBox title="Seguindo" items={seguindo}/>
+          <ProfileRelationBox title="Seguindo " items={following}/>
           
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
-              Comunidades({comunidades.length})
+              Comunidades ({comunidades.length})
             </h2>
 
           <ul>
