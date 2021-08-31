@@ -76,7 +76,7 @@ export default function Home(props) {
 
             <OrkutNostalgicIconSet></OrkutNostalgicIconSet>
           </Box>
-
+          
           <Box>
             <h2 className="subTitle">O que você deseja fazer?</h2>
             <form onSubmit={function handleCreateCommunity(e) {
@@ -137,7 +137,7 @@ export default function Home(props) {
               </div>
 
               <button>
-                Criar comunidade
+                Crie sua comunidade
               </button>
             </form>
           </Box>
