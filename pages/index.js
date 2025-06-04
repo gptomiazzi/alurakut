@@ -56,8 +56,8 @@ export default function Home(props) {
       }` })
     })
     .then( async (response) => {
-      const responseComunities = await response.json();
-      setComunidades(responseComunities.data.allCommunities);
+      const responseCommunities = await response.json();
+      setComunidades(responseCommunities.data.allCommunities);
     })
   }, [])
 
