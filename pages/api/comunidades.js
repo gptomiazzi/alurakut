@@ -7,7 +7,7 @@ export default async function RequestsHandler(request, response) {
         const client = new SiteClient(TOKEN);
     
         const record = await client.items.create({
-            itemType: '968553', // ID do Model de "Comunities" criado pelo Dato
+            itemType: '968553', // ID do Model de "Communities" criado pelo Dato
             ...request.body,
         })
 
